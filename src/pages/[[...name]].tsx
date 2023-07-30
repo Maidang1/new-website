@@ -4,6 +4,7 @@ import { prepareMDX } from "../utils/prepare-mdx"
 import { Fragment, useMemo } from "react"
 import { Toc } from "@/types"
 import { MDXComponents } from "../components/mdx-components"
+import { Page } from "./layout/page"
 
 function reviveNodeOnClient(key: string, val: string) {
   if (Array.isArray(val) && val[0] == "$r") {
@@ -33,7 +34,7 @@ function reviveNodeOnClient(key: string, val: string) {
 }
 export default function Home(props: { toc: string; content: string }) {
   const { content, toc } = props
-
+  console.log("content", content)
   const parsedContent = useMemo(
     () => JSON.parse(content, reviveNodeOnClient),
     [content]
@@ -42,16 +43,7 @@ export default function Home(props: { toc: string; content: string }) {
     () => JSON.parse(toc, reviveNodeOnClient),
     [toc]
   ) as Toc[]
-  return (
-    <main className="flex">
-      <div>
-        {parsedToc.map((item, index) => (
-          <li key={index}>{item.text}</li>
-        ))}
-      </div>
-      <div>{parsedContent}</div>
-    </main>
-  )
+  return <Page toc={parsedToc} content={parsedContent} />
 }
 
 export async function getStaticPaths() {
@@ -121,12 +113,13 @@ export async function getStaticProps(context: any) {
     ],
   })
   const babelCode = jsxCode.toString() || ""
+  console.log("jsxCode", jsxCode)
   const { transform } = await import("@babel/core")
   const jsCode = transform(babelCode, {
     plugins: ["@babel/plugin-transform-modules-commonjs"],
     presets: ["@babel/preset-react"],
   })!.code as string
-
+  console.log("jsCode", jsCode)
   let fakeExports: {
     default: (...args: any) => any
   } = {
@@ -145,8 +138,9 @@ export async function getStaticProps(context: any) {
   const evalJSCode = new Function("require", "exports", jsCode)
   evalJSCode(fakeRequire, fakeExports)
   const reactTree = fakeExports.default({})
-
+  console.log("reactTree", reactTree)
   let [toc, children] = prepareMDX(reactTree.props.children)
+  console.log("children", children)
   if (reqPath === "index") {
     toc = []
   }
