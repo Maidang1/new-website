@@ -2,6 +2,8 @@ import fs from "fs"
 import path from "path"
 import { prepareMDX } from "../utils/prepare-mdx"
 import { Fragment, useMemo } from "react"
+import { Toc } from "@/types"
+import { MDXComponents } from "../components/mdx-components"
 
 function reviveNodeOnClient(key: string, val: string) {
   if (Array.isArray(val) && val[0] == "$r") {
@@ -10,6 +12,9 @@ function reviveNodeOnClient(key: string, val: string) {
     let key = val[2]
     let props = val[3]
 
+    if (MDXComponents[type as keyof typeof MDXComponents]) {
+      type = MDXComponents[type as keyof typeof MDXComponents]
+    }
     if (!type) {
       console.error("Unknown type: " + type)
       type = Fragment
@@ -26,14 +31,17 @@ function reviveNodeOnClient(key: string, val: string) {
     return val
   }
 }
-export default function Home(props: any) {
+export default function Home(props: { toc: string; content: string }) {
   const { content, toc } = props
 
   const parsedContent = useMemo(
     () => JSON.parse(content, reviveNodeOnClient),
     [content]
   )
-  const parsedToc = useMemo(() => JSON.parse(toc, reviveNodeOnClient), [toc])
+  const parsedToc = useMemo(
+    () => JSON.parse(toc, reviveNodeOnClient),
+    [toc]
+  ) as Toc[]
   return (
     <main className="flex">
       <div>
@@ -87,7 +95,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context: any) {
   const postDir = path.join(process.cwd(), "src", "posts")
-
+  const mdxComponentNames = Object.keys(MDXComponents)
   const reqPath = (context.params.name || []).join("/") || "index"
   let mdx
   try {
@@ -96,9 +104,16 @@ export async function getStaticProps(context: any) {
     mdx = fs.readFileSync(path.join(postDir, reqPath, "index.mdx"), "utf8")
   }
 
+  let mdxWithFakeImports =
+    mdx +
+    "\n\n" +
+    mdxComponentNames
+      .map((key) => "import " + key + ' from "' + key + '";\n')
+      .join("\n")
+
   const { remarkPlugins } = await import("../plugins/markdown-to-html")
   const { compile: compileMdx } = await import("@mdx-js/mdx")
-  const jsxCode = await compileMdx(mdx, {
+  const jsxCode = await compileMdx(mdxWithFakeImports, {
     remarkPlugins: [
       ...remarkPlugins.remarkPlugins,
       (await import("remark-gfm")).default,

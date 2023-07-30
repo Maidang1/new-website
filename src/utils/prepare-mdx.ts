@@ -1,15 +1,4 @@
-/*
- * Copyright (c) Facebook, Inc. and its affiliates.
- */
-
-import React, { Children } from 'react';
-
-// TODO: This logic could be in MDX plugins instead.
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-export const PREPARE_MDX_CACHE_BREAKER = 2;
-// !!! IMPORTANT !!! Bump this if you change any logic.
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import { Children } from "react";
 
 export function prepareMDX(rawChildren: any) {
   const toc = getTableOfContents(rawChildren, /* depth */ 10);
