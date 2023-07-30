@@ -14,19 +14,20 @@ export const LayoutHeader = () => {
     },
   ]
   return (
-    <div className="flex justify-between px-8 py-8">
+    <div className="flex justify-between px-8 py-4 fixed left-0 right-0 border-b border-black/5 bg-white/70 backdrop-blur-xl backdrop-saturate-150">
       <div className="opacity-50 hover:opacity-80">
         <a href="#">MaiDang</a>
       </div>
-      <div>
+      <div className="flex">
         {tabs.map((item) => (
-          <a
-            href={item.link}
+          <div
             key={item.text}
             className="mr-4 opacity-50 hover:opacity-80 last:mr-0"
           >
-            {item.text}
-          </a>
+            <a href={item.link} className="">
+              {item.text}
+            </a>
+          </div>
         ))}
       </div>
     </div>
