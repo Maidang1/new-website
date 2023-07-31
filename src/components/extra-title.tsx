@@ -1,3 +1,8 @@
 export const ExtraTitle = (props: any) => {
-  return <div {...props} className="font-extrabold text-4xl py-4" />
+  return (
+    <div
+      {...props}
+      className="font-bold text-4xl py-4 text-black dark:text-white"
+    />
+  )
 }

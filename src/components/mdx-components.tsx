@@ -1,13 +1,9 @@
 import { ExtraTitle } from "./extra-title"
-export const H1 = ({ children }: any) => {
-  return (
-    <h1 className="text-2xl font-bold mt-6 mb-4 dark:text-white">{children}</h1>
-  )
-}
+import { IconLink } from "./icon-link"
 
 export const MDXComponents = {
-  h1: H1,
   ExtraTitle,
+  IconLink,
 } as const
 for (let key in MDXComponents) {
   if (MDXComponents.hasOwnProperty(key)) {
