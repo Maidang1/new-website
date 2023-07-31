@@ -1,4 +1,4 @@
-export const LayoutHeader = () => {
+const LayoutHeader = () => {
   const tabs = [
     {
       text: "Blog",
@@ -33,3 +33,5 @@ export const LayoutHeader = () => {
     </div>
   )
 }
+
+export default LayoutHeader

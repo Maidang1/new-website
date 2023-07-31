@@ -4,7 +4,7 @@ import { prepareMDX } from "../utils/prepare-mdx"
 import { Fragment, useMemo } from "react"
 import { Toc } from "@/types"
 import { MDXComponents } from "../components/mdx-components"
-import { Page } from "./layout/page"
+import Page from "./layout/page"
 
 function reviveNodeOnClient(key: string, val: string) {
   if (Array.isArray(val) && val[0] == "$r") {

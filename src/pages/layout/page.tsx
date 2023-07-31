@@ -1,13 +1,13 @@
 import { Toc } from "@/types"
 import { Fragment } from "react"
-import { LayoutHeader } from "./header"
+import LayoutHeader from "./header"
 
 interface PageProps {
   content: string
   toc: Toc[]
 }
 
-export const Page = ({ content }: PageProps) => {
+const Page = ({ content }: PageProps) => {
   return (
     <Fragment>
       <div className="overflow-y-scroll h-screen overflow-x-hidden">
@@ -21,3 +21,4 @@ export const Page = ({ content }: PageProps) => {
     </Fragment>
   )
 }
+export default Page
