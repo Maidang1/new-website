@@ -10,7 +10,7 @@ interface PageProps {
 const Page = ({ content }: PageProps) => {
   return (
     <Fragment>
-      <div className="overflow-y-scroll h-screen overflow-x-hidden">
+      <div className="overflow-y-auto h-screen overflow-x-hidden bg-gradient-radial">
         <LayoutHeader />
         <main className="flex prose m-auto px-8 text-black dark:text-white mt-24">
           <div className="prose" id="main-content">

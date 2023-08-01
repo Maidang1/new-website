@@ -1,9 +1,9 @@
 import { ExtraTitle } from "./extra-title"
-import { IconLink } from "./icon-link"
+import { LinkTag } from "./link"
 
 export const MDXComponents = {
   ExtraTitle,
-  IconLink,
+  a: LinkTag,
 } as const
 for (let key in MDXComponents) {
   if (MDXComponents.hasOwnProperty(key)) {
