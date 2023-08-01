@@ -1,9 +1,10 @@
 import { ExtraTitle } from "./extra-title"
-import { LinkTag } from "./link"
-
+import { TagLink } from "./link"
+import { BlogItem } from "./blog-item"
 export const MDXComponents = {
   ExtraTitle,
-  a: LinkTag,
+  a: TagLink,
+  BlogItem,
 } as const
 for (let key in MDXComponents) {
   if (MDXComponents.hasOwnProperty(key)) {

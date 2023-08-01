@@ -13,7 +13,7 @@ const Page = ({ content }: PageProps) => {
       <div className="overflow-y-auto h-screen overflow-x-hidden bg-gradient-radial">
         <LayoutHeader />
         <main className="flex prose m-auto px-8 text-black dark:text-white mt-24">
-          <div className="prose" id="main-content">
+          <div className="prose w-full" id="main-content">
             {content}
           </div>
         </main>
