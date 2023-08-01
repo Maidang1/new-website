@@ -23,12 +23,7 @@ export const TagLink = (props: LinkTagProps) => {
   const underline =
     "border-b border-black/20 hover:border-black/60 dark:border-white/20 dark:hover:border-white/60"
   const showUnderLine = title !== "list"
-  const extraColor: Record<string, string> = {
-    list: "text‑inherit",
-  }
-  const className = `${base} ${showUnderLine ? underline : ""} ${
-    extraColor[title] ?? ""
-  }`
+  const className = `${base} ${showUnderLine ? underline : ""}`
 
   return (
     <span className="inline-block align-middle">
