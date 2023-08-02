@@ -132,8 +132,6 @@ export async function getStaticProps(context: any) {
     default: () => {},
   }
 
-  fs.writeFileSync("./test.txt", jsCode)
-
   const fakeRequire = (name: string) => {
     if (name === "react/jsx-runtime") {
       return require("react/jsx-runtime")
