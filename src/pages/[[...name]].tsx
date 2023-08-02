@@ -5,6 +5,7 @@ import { Fragment, useMemo } from "react"
 import { Toc } from "@/types"
 import { MDXComponents } from "../components/mdx-components"
 import Page from "./layout/page"
+import { Code } from "@code-hike/mdx/components"
 
 function reviveNodeOnClient(key: string, val: string) {
   if (Array.isArray(val) && val[0] == "$r") {
@@ -18,7 +19,12 @@ function reviveNodeOnClient(key: string, val: string) {
     }
     if (!type) {
       console.error("Unknown type: " + type)
-      type = Fragment
+      // 标记这是 codeHike
+      if (props.codeConfig !== null) {
+        type = Code
+      } else {
+        type = Fragment
+      }
     }
     return {
       $$typeof: Symbol.for("react.element"),
@@ -104,11 +110,14 @@ export async function getStaticProps(context: any) {
 
   const { remarkPlugins } = await import("../plugins/markdown-to-html")
   const { compile: compileMdx } = await import("@mdx-js/mdx")
+  const { remarkCodeHike } = await import("@code-hike/mdx")
+
   const jsxCode = await compileMdx(mdxWithFakeImports, {
     remarkPlugins: [
       ...remarkPlugins.remarkPlugins,
       (await import("remark-gfm")).default,
       (await import("remark-frontmatter")).default,
+      [remarkCodeHike, { theme: "poimandres", autoImport: true }],
     ],
   })
   const babelCode = jsxCode.toString() || ""
@@ -122,9 +131,15 @@ export async function getStaticProps(context: any) {
   } = {
     default: () => {},
   }
+
+  fs.writeFileSync("./test.txt", jsCode)
+
   const fakeRequire = (name: string) => {
     if (name === "react/jsx-runtime") {
       return require("react/jsx-runtime")
+    }
+    if (name === "@code-hike/mdx/dist/components.cjs.js") {
+      return require("@code-hike/mdx/dist/components.cjs.js")
     }
     if (name === "react/jsx-dev-runtime") {
       return require("react/jsx-dev-runtime")

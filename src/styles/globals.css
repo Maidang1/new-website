@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+@import "@code-hike/mdx/dist/index.css";
+:root  {
   --bg-color: rgb(255, 255, 255);
 }
 #main-content {
