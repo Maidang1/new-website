@@ -18,12 +18,12 @@ function reviveNodeOnClient(key: string, val: string) {
       type = MDXComponents[type as keyof typeof MDXComponents]
     }
     if (!type) {
-      console.error("Unknown type: " + type)
       // 标记这是 codeHike
       if (props.codeConfig !== null) {
         type = Code
       } else {
         type = Fragment
+        console.error("Unknown type: " + type)
       }
     }
     return {

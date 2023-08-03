@@ -1,0 +1,106 @@
+# NodeJS loader
+
+## 如何加载 loader
+
+首先来介绍一个 `node --loader`参数，这个参数允许我们自定义加载 ESM 模块的规则。
+执行 `node --loader ./my-loader.mjs index.mjs`。在加载 index.mjs 的时候，就会先去执行
+my-loader.mjs 里面的内容。如果书写 my-loader.js 呢。node 内置了两个 hooks，
+分别是 `resolve` 和 `load` 可以在 import 的时候被执行（注：这两个 hooks 仅仅对 ESM 的模块生效，对 CJS 无效）。
+下面来介绍两个 hooks 的用法:
+
+## resolve
+
+> resolve 函数可以让我们拿到文件名和文件 format 的信息。我们可以改变传入的模块的信息，然后返回回去，返回的信息会交给 load 这个 hooks 来执行
+
+```js
+export async function resolve(specifier, context, nextResolve) {
+  const { parentURL = null } = context;
+  if (Math.random() > 0.5) {
+    return {
+      shortCircuit: true,
+      url: parentURL ?
+        new URL(specifier, parentURL).href :
+        new URL(specifier).href,
+    };
+  }
+  if (Math.random() < 0.5) { .
+    return nextResolve(specifier, {
+      ...context,
+      conditions: [...context.conditions, 'another-condition'],
+    });
+  }
+  return nextResolve(specifier);
+}
+```
+
+specifier 就是待执行文件的路径，context 记录了 parentURL 和 可以导入的 conditions 的规则。nextResolve 就是写一个 resolve 的 函数。如果没有的话就是默认的。返回的结构
+
+```json
+{
+    format: 'commonjs' | 'module' | 'wasm',
+    shortCircuit: boolean, // default false 是否结束 resolve hooks
+    url: string; // 文件的 URL 我们可以在里面处理文件原来的 URL 。
+}
+```
+
+## load
+
+> 这个 hook 决定了一个文件的 url 如何被检索和解析
+
+```js loader.mjs
+export async function load(url, context, defaultLoad) {
+  const load = defaultLoad(url, context, defaultLoad)
+  const source = load.source
+
+  return {
+    format: "module",
+    source: `${source} console.log("i am injected from loader.mjs")`,
+  }
+}
+```
+
+```js index.mjs
+console.log("2")
+```
+
+执行 `node --loader ./loader.mjs index.mjs` 会打印出来 `2 i am injected from loader.mjs` 这样可以通过
+运行时注入我们需要的代码
+
+## cjs 的 loader
+
+上面介绍了一些 ESM 的 hooks。下面再介绍一下如何在 CJS 里面实现上面 load 的功能
+
+```js
+// 模块的加载
+Module.prototype.load = function (filename) {
+  var extension = path.extname(filename) || ".js"
+  if (!Module._extensions[extension]) extension = ".js"
+  Module._extensions[extension](this, filename)
+  this.loaded = true
+}
+
+// 调用不同后缀名的解析方法
+Module._extensions[".js"] = function (module, filename) {
+  var content = fs.readFileSync(filename, "utf8")
+  module._compile(stripBOM(content), filename)
+}
+
+Module._extensions[".json"] = function (module, filename) {
+  var content = fs.readFileSync(filename, "utf8")
+  try {
+    module.exports = JSON.parse(stripBOM(content))
+  } catch (err) {
+    err.message = filename + ": " + err.message
+    throw err
+  }
+}
+
+// 最后调用 _compile 方法来编译我们的模块。
+Module.prototype._compile = function (content, filename) {
+  var self = this
+  var args = [self.exports, require, self, filename, dirname]
+  return compiledWrapper.apply(self.exports, args)
+}
+```
+
+类似的 这样我们也可以注入 CJS 的 loader
