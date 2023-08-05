@@ -10,7 +10,7 @@ const LayoutHeader = () => {
     },
     {
       text: "Workspace",
-      link: "/post",
+      link: "/workspace",
     },
   ]
   return (

@@ -7,7 +7,7 @@
   --bg-color: rgb(255, 255, 255);
 }
 #main-content {
-  --tw-prose-headings: rgb(34, 34, 34);
+  --tw-prose-headings: rgba(34, 34, 34, 0.8);
   --tw-prose-body: rgb(85, 85, 85);
   --ch-0: light;
   --ch-1: #6e7781;
@@ -43,7 +43,7 @@
   }
   #main-content {
     --tw-prose-body: #bbb;
-    --tw-prose-headings: #ddd;
+    --tw-prose-headings: rgba(221, 221, 221, 0.9);
     --ch-0: dark;
     --ch-1: #8b949e;
     --ch-2: #79c0ff;
