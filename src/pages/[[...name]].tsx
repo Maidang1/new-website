@@ -117,7 +117,7 @@ export async function getStaticProps(context: any) {
       ...remarkPlugins.remarkPlugins,
       (await import("remark-gfm")).default,
       (await import("remark-frontmatter")).default,
-      [remarkCodeHike, { theme: "poimandres", autoImport: true }],
+      [remarkCodeHike, { theme: "github-from-css", autoImport: true }],
     ],
   })
   const babelCode = jsxCode.toString() || ""
