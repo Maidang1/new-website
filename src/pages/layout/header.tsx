@@ -6,7 +6,7 @@ const LayoutHeader = () => {
     },
     {
       text: "Projects",
-      link: "/post",
+      link: "/projects",
     },
     {
       text: "Workspace",
@@ -19,7 +19,7 @@ const LayoutHeader = () => {
     dark:border-white/50 dark:bg-black/70 dark:text-white z-50"
     >
       <div className="opacity-50 hover:opacity-80 dark:opacity-90 dark:hover:opacity-100">
-        <a href="/">MaiDang</a>
+        <a href="/">Madinah</a>
       </div>
       <div className="flex">
         {tabs.map((item) => (
