@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { iconsPlugin, getIconCollections } from "@egoist/tailwindcss-icons";
 
 const config: Config = {
   content: [
@@ -16,6 +17,8 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/typography"), iconsPlugin({
+    collections: getIconCollections(["simple-icons", "tdesign"])
+  })],
 };
 export default config;

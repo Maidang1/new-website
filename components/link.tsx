@@ -16,8 +16,9 @@ export const TagLink = (
   const className = `${base} ${showUnderLine ? underline : ''}`;
 
   return (
-    <span className='inline-block align-bottom'>
+    <span className='inline-block align-bottom hover:opacity-70'>
       <Link href={href ?? ''} className={className}>
+        {title && <span className={`${title} mr-1`} />}
         <span>{children}</span>
       </Link>
     </span>
