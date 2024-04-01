@@ -35,20 +35,16 @@ export const getStaticProps = async () => {
   const fs = await import('fs/promises');
   const { recursiveReaddir } = await import('../../utils/index');
   const { generateFileInfo } = await import('../../utils/fileInfo');
-  const { compile } = await import('@mdx-js/mdx');
   const postDir = path.join(process.cwd(), 'pages/blog/posts');
   const files = await recursiveReaddir(postDir);
   const fileInfos = await Promise.all(
     files.map(async (file) => {
       const info = await generateFileInfo(file)!;
       const { ctimeMs } = info!;
-      const res = await compile(await fs.readFile(file, 'utf8'));
-      console.log('res', res);
       return {
         filepath: file,
         lastModifyTime: new Date(ctimeMs).toDateString(),
         fileName: path.parse(file).name,
-        res:String(res.data),
       };
     })
   );

@@ -11,11 +11,11 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children, isBlogPage }) => {
       <div className='overflow-y-auto h-screen overflow-x-hidden bg-gradient-radial pb-20'>
         <main
           className={`flex m-auto px-8 text-black dark:text-white mt-24 ${
-            isBlogPage ? '' : 'prose'
+            isBlogPage ? 'prose' : 'prose'
           }`}
         >
           <div
-            className={`w-full ${isBlogPage ? '' : 'prose'}`}
+            className={`w-full ${isBlogPage ? 'prose' : 'prose'}`}
             id='main-content'
           >
             {children}
