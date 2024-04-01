@@ -27,6 +27,7 @@
   "devDependencies": {
     "@code-hike/mdx": "^0.9.0",
     "@egoist/tailwindcss-icons": "^1.7.4",
+    "@jsdevtools/rehype-toc": "^3.0.2",
     "@mdx-js/loader": "^3.0.1",
     "@types/node": "^20",
     "@types/react": "^18",

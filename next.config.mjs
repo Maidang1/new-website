@@ -1,13 +1,13 @@
 import getMdxConfig from '@next/mdx';
 import { remarkCodeHike } from '@code-hike/mdx';
 import remarkToc from 'remark-toc';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeSlug from 'rehype-slug';
+import rehypeToc from '@jsdevtools/rehype-toc';
 const withMDX = getMdxConfig({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [[remarkToc], [remarkCodeHike]],
-    rehypePlugins: [[rehypeSlug]],
+    rehypePlugins: [[rehypeSlug], [rehypeToc]],
   },
 });
 /** @type {import('next').NextConfig} */

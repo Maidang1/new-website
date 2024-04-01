@@ -25,6 +25,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h4: heading('h4'),
     h5: heading('h5'),
     h6: heading('h6'),
+    // nav: (props) => {
+    //   console.log('nav', props);
+    //   return null;
+    // },
     ...components,
   };
 }

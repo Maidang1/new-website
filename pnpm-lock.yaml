@@ -55,6 +55,9 @@ devDependencies:
   '@egoist/tailwindcss-icons':
     specifier: ^1.7.4
     version: 1.7.4(tailwindcss@3.4.3)
+  '@jsdevtools/rehype-toc':
+    specifier: ^3.0.2
+    version: 3.0.2
   '@mdx-js/loader':
     specifier: ^3.0.1
     version: 3.0.1(webpack@5.91.0)
@@ -206,6 +209,11 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
+
+  /@jsdevtools/rehype-toc@3.0.2:
+    resolution: {integrity: sha512-n5JEf16Wr4mdkRMZ8wMP/wN9/sHmTjRPbouXjJH371mZ2LEGDl72t8tEsMRNFerQN/QJtivOxqK1frdGa4QK5Q==}
+    engines: {node: '>=10'}
+    dev: true
 
   /@mdx-js/loader@3.0.1(webpack@5.91.0):
     resolution: {integrity: sha512-YbYUt7YyEOdFxhyuCWmLKf5vKhID/hJAojEUnheJk4D8iYVLFQw+BAoBWru/dHGch1omtmZOPstsmKPyBF68Tw==}
