@@ -1,5 +1,5 @@
 import '@/styles/globals.css';
-import "@code-hike/mdx/dist/index.css"
+import '@code-hike/mdx/dist/index.css';
 import type { AppProps } from 'next/app';
 import PageLayout from './layout/page';
 import { useTransition, animated } from '@react-spring/web';
@@ -16,13 +16,14 @@ export default function App({ Component, pageProps }: AppProps) {
     leave: { opacity: 0, transform: 'translateY(50px)' },
     config: { duration: 400 },
   });
+  const isBlogPage = router.pathname.startsWith('/blog/posts');
 
   return transition((style) => {
     return (
       <div className='overflow-hidden'>
         <LayoutHeader />
         <animated.div style={style}>
-          <PageLayout>
+          <PageLayout isBlogPage={isBlogPage}>
             <Component {...pageProps} />
           </PageLayout>
         </animated.div>
