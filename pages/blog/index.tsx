@@ -1,7 +1,10 @@
-interface Files {
+import { FILE_INFO } from '../../utils/fileInfo';
+
+export interface Files {
   filepath: string;
   lastModifyTime: string;
   fileName: string;
+  text: string;
 }
 
 interface BlogsProps {
@@ -12,7 +15,7 @@ export default function Blogs(props: BlogsProps) {
   const { files } = props;
   return (
     <>
-      {files.map(({ lastModifyTime, fileName }) => (
+      {files.map(({ lastModifyTime, fileName, text }) => (
         <a
           href={`/blog/posts/${fileName}`}
           key={fileName}
@@ -23,6 +26,7 @@ export default function Blogs(props: BlogsProps) {
               {fileName}
             </span>
             <span className='text-sm'>{lastModifyTime}</span>
+            <span className='text-sm'>{text}</span>
           </li>
         </a>
       ))}
@@ -32,7 +36,6 @@ export default function Blogs(props: BlogsProps) {
 
 export const getStaticProps = async () => {
   const path = await import('path');
-  const fs = await import('fs/promises');
   const { recursiveReaddir } = await import('../../utils/index');
   const { generateFileInfo } = await import('../../utils/fileInfo');
   const postDir = path.join(process.cwd(), 'pages/blog/posts');
@@ -40,12 +43,15 @@ export const getStaticProps = async () => {
   const fileInfos = await Promise.all(
     files.map(async (file) => {
       const info = await generateFileInfo(file)!;
-      const { ctimeMs } = info!;
-      return {
+      const { ctimeMs, text } = info!;
+      const fileInfo = {
         filepath: file,
         lastModifyTime: new Date(ctimeMs).toDateString(),
         fileName: path.parse(file).name,
+        text,
       };
+      // FILE_INFO.set(`/blog/posts${path.parse(file).name}`, fileInfo);
+      return fileInfo;
     })
   );
   return {
