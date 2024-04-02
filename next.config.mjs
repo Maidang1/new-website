@@ -7,7 +7,12 @@ const withMDX = getMdxConfig({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [[remarkToc], [remarkCodeHike]],
-    rehypePlugins: [[rehypeSlug], [rehypeToc]],
+    rehypePlugins: [[rehypeSlug], [rehypeToc, {
+      cssClasses: {
+        toc: "blog-toc",
+        list: 'blog-toc-list not-prose'
+      },
+    }]],
   },
 });
 /** @type {import('next').NextConfig} */
