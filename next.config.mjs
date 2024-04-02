@@ -3,10 +3,19 @@ import { remarkCodeHike } from '@code-hike/mdx';
 import remarkToc from 'remark-toc';
 import rehypeSlug from 'rehype-slug';
 import rehypeToc from '@jsdevtools/rehype-toc';
+import remarkBreaks from "remark-breaks"
+
 const withMDX = getMdxConfig({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [[remarkToc], [remarkCodeHike]],
+    remarkPlugins: [[remarkToc], [remarkCodeHike, {
+      lineNumbers: true,
+      showCopyButton: true,
+      theme: "dark-plus",
+      skipLanguages: ["mermaid"],
+      autoImport: true,
+      autoLink: true,
+    }], [remarkBreaks]],
     rehypePlugins: [[rehypeSlug], [rehypeToc, {
       cssClasses: {
         toc: "blog-toc",
