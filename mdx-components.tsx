@@ -5,13 +5,6 @@ import { heading } from './components/header';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    img: (props) => (
-      <Image
-        sizes='100vw'
-        style={{ width: '100%', height: 'auto' }}
-        {...(props as ImageProps)}
-      />
-    ),
     ExtraTitle: ({ children }) => (
       <div
         children={children}
