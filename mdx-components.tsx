@@ -3,7 +3,7 @@ import Image, { ImageProps } from 'next/image';
 import { TagLink } from './components/link';
 import { heading } from './components/header';
 
-export function useMDXComponents(components: MDXComponents): MDXComponents {
+export function useMDXComponents(): MDXComponents {
   return {
     ExtraTitle: ({ children }) => (
       <div
@@ -22,6 +22,5 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     //   console.log('nav', props);
     //   return null;
     // },
-    ...components,
   };
 }

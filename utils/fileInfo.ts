@@ -1,4 +1,4 @@
-import { Files } from '@/pages/blog'
+import { Files } from '@/posts/blog/index.mdx'
 
 export const FILE_INFO = new Map<string, Files>()
 
