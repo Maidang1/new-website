@@ -1,8 +1,7 @@
 import type { MDXComponents } from 'mdx/types';
-import Image, { ImageProps } from 'next/image';
 import { TagLink } from './components/link';
 import { heading } from './components/header';
-
+import BlogsList from './components/blog-list';
 export function useMDXComponents(): MDXComponents {
   return {
     ExtraTitle: ({ children }) => (
@@ -18,9 +17,6 @@ export function useMDXComponents(): MDXComponents {
     h4: heading('h4'),
     h5: heading('h5'),
     h6: heading('h6'),
-    // nav: (props) => {
-    //   console.log('nav', props);
-    //   return null;
-    // },
+    BlogsList,
   };
 }

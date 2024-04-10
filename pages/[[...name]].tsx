@@ -5,19 +5,52 @@ import remarkToc from 'remark-toc';
 import { remarkCodeHike } from '@code-hike/mdx';
 import rehypeSlug from 'rehype-slug';
 import rehypeToc from '@jsdevtools/rehype-toc';
+import remarkGfm from 'remark-gfm';
+import { readingTime } from 'reading-time-estimator';
+import { PostListContext } from '@/stores/post-list-context';
+import { PostItemContext } from '@/stores/post-item-context';
+import fm from 'front-matter';
+
 interface HomeProps {
   code: string;
   frontmatter: Record<string, any>;
+  postInfo: any[];
 }
 
 const Home = (props: HomeProps) => {
-  const { code } = props;
+  const { code, postInfo, frontmatter } = props;
   const components = useMDXComponents();
   const Component = getMDXComponent(code);
+  const { title, author, tags, description, createdAt } = frontmatter;
   return (
-    <div>
-      <Component components={components} />
-    </div>
+    <PostItemContext.Provider value={frontmatter}>
+      <PostListContext.Provider value={postInfo}>
+        {title && (
+          <div className='post-header mb-8'>
+            <div className='xlog-post-title mb-8 flex items-center relative text-4xl font-extrabold justify-center text-center'>
+              {title}
+            </div>
+            <div className='text-zinc-400 mt-5 space-x-5 flex items-center justify-center'>
+              <span>{new Date(createdAt).toLocaleString()}</span>
+              <span>
+                {(tags as any[]).map((tag) => (
+                  <span key={tag} className='inline-block'>
+                    #{tag}
+                  </span>
+                ))}
+              </span>
+              <span>{author}</span>
+            </div>
+            <div className='xlog-post-summary border rounded-xl mt-5 p-4 space-y-2'>
+              <div className='text-zinc-500 leading-loose text-sm'>
+                {description}
+              </div>
+            </div>
+          </div>
+        )}
+        <Component components={components} />
+      </PostListContext.Provider>
+    </PostItemContext.Provider>
   );
 };
 
@@ -37,7 +70,6 @@ export const getStaticPaths = (async () => {
         return isDir ? getFiles(res) : res.slice(postDir.length + 1);
       })
     )) as string[];
-
     return files
       .flat()
       .filter((file) => file.endsWith('.mdx') || file.endsWith('.tsx'));
@@ -78,7 +110,6 @@ export const getStaticProps = async (context: ContextProps) => {
   const requestPath = (context.params.name || []).join('/') || 'index';
   const postDir = path.join(process.cwd(), 'posts');
   let mdxContext = '';
-
   try {
     mdxContext = await fs.readFile(
       path.join(postDir, `${requestPath}.mdx`),
@@ -97,11 +128,13 @@ export const getStaticProps = async (context: ContextProps) => {
       );
     }
   }
+
   const { code, frontmatter } = await bundleMDX({
     source: mdxContext,
     mdxOptions: (options) => {
       options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
+        remarkGfm,
         remarkToc,
         [
           remarkCodeHike,
@@ -132,10 +165,48 @@ export const getStaticProps = async (context: ContextProps) => {
     },
   });
 
+  frontmatter.createdAt = new Date(frontmatter.createdAt).getTime();
+  const getFiles = async (dir: string) => {
+    const subDirs = await fs.readdir(dir);
+    const files = (await Promise.all(
+      subDirs.map(async (subDir) => {
+        const res = path.resolve(dir, subDir);
+        const isDir = (await fs.stat(res)).isDirectory();
+        return isDir ? getFiles(res) : res.slice(postDir.length + 1);
+      })
+    )) as string[];
+    return files
+      .flat()
+      .filter(
+        (file) =>
+          file.endsWith('.mdx') &&
+          !(file.startsWith('index.mdx') || file.endsWith('index.mdx'))
+      );
+  };
+  async function getPostListAndPostInfo() {
+    const files = await getFiles(postDir);
+    const postInfo = await Promise.all(
+      files.map(async (fileItem) => {
+        const filePath = path.join(postDir, fileItem);
+        const content = await fs.readFile(filePath, 'utf8');
+        const result = readingTime(content);
+        const { attributes } = fm(content);
+        const { title } = attributes as any;
+        return {
+          result,
+          name: path.parse(fileItem).name,
+          title,
+        };
+      })
+    );
+    return postInfo;
+  }
+  const postInfo = await getPostListAndPostInfo();
   return {
     props: {
       code,
       frontmatter,
+      postInfo,
     },
   };
 };
