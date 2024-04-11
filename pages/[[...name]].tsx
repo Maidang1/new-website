@@ -114,6 +114,12 @@ export const getStaticProps = async (context: ContextProps) => {
   const path = await import('path');
   const fs = await import('fs/promises');
   const { bundleMDX } = await import('mdx-bundler');
+  const RSS = (await import('rss')).default;
+  const feed = new RSS({
+    title: "Madinah's blog",
+    feed_url: 'http://localhost:3000/feed.xml',
+    site_url: 'http://localhost:3000',
+  });
   const requestPath = (context.params.name || []).join('/') || 'index';
   const postDir = path.join(process.cwd(), 'posts');
   let mdxContext = '';
@@ -193,6 +199,12 @@ export const getStaticProps = async (context: ContextProps) => {
         const result = readingTime(content);
         const { attributes } = fm(content);
         const { title } = attributes as any;
+        feed.item({
+          title: title,
+          url: '',
+          description: '',
+          date: '',
+        });
         return {
           result,
           name: path.parse(fileItem).name,
@@ -202,7 +214,12 @@ export const getStaticProps = async (context: ContextProps) => {
     );
     return postInfo;
   }
+
   const postInfo = await getPostListAndPostInfo();
+  await fs.writeFile(
+    path.join(process.cwd(), 'public', 'feed.xml'),
+    feed.xml({ indent: true })
+  );
   return {
     props: {
       code,
