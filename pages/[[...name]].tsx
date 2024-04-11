@@ -27,19 +27,23 @@ const Home = (props: HomeProps) => {
       <PostListContext.Provider value={postInfo}>
         {title && (
           <div className='post-header mb-8'>
-            <div className='xlog-post-title mb-8 flex items-center relative text-4xl font-extrabold justify-center text-center'>
+            <div className='mb-8 flex items-center relative text-4xl font-extrabold justify-center text-center'>
               {title}
             </div>
-            <div className='text-zinc-400 mt-5 space-x-5 flex items-center justify-center'>
-              <span>{new Date(createdAt).toLocaleString()}</span>
-              <span>
+            <div className='text-zinc-400 flex min-w-0 shrink grow flex-wrap gap-2 text-sm mb-8 justify-center'>
+              <span className='flex min-w-0 items-center space-x-1'>
+                {new Date(createdAt).toLocaleString()}
+              </span>
+              <span className='flex min-w-0 items-center space-x-1'>
                 {(tags as any[]).map((tag) => (
                   <span key={tag} className='inline-block'>
                     #{tag}
                   </span>
                 ))}
               </span>
-              <span>{author}</span>
+              <span className='flex min-w-0 items-center space-x-1'>
+                {author}
+              </span>
             </div>
             <div className='xlog-post-summary border rounded-xl mt-5 p-4 space-y-2'>
               <div className='text-zinc-500 leading-loose text-sm'>
@@ -48,7 +52,9 @@ const Home = (props: HomeProps) => {
             </div>
           </div>
         )}
-        <Component components={components} />
+        <div className='!text-base'>
+          <Component components={components} />
+        </div>
       </PostListContext.Provider>
     </PostItemContext.Provider>
   );
@@ -151,15 +157,7 @@ export const getStaticProps = async (context: ContextProps) => {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         [rehypeSlug],
-        [
-          rehypeToc,
-          {
-            cssClasses: {
-              toc: 'blog-toc',
-              list: 'blog-toc-list not-prose',
-            },
-          },
-        ],
+        // [rehypeToc],
       ];
       return options;
     },

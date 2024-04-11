@@ -5,19 +5,12 @@ interface PageLayoutProps {
   isBlogPage: boolean;
 }
 
-const PageLayout: React.FC<PageLayoutProps> = ({ children, isBlogPage }) => {
+const PageLayout: React.FC<PageLayoutProps> = ({ children }) => {
   return (
     <Fragment>
       <div className='overflow-y-auto h-screen overflow-x-hidden bg-gradient-radial pb-20'>
-        <main
-          className={`flex m-auto px-8 text-black dark:text-white mt-24 ${
-            isBlogPage ? 'prose' : 'prose'
-          }`}
-        >
-          <div
-            className={`w-full ${isBlogPage ? 'prose' : 'prose'}`}
-            id='main-content'
-          >
+        <main className='flex m-auto px-8 container mx-auto mt-[120px] max-w-5xl prose'>
+          <div className='w-full' id='main-content'>
             {children}
           </div>
         </main>

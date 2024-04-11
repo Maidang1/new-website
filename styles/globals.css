@@ -2,33 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.blog-toc {
-  @apply absolute right-[20px] top-[200px];
+@font-face {
+  font-family: 'OperatorMonoSSmLigNerdFontAAEOPSLMDI';
+  src: url('../assets/OperatorMonoSSmLigNerdFontAAEOPSLMDI-Book.woff2');
 }
 
-.blog-toc-list {
-  @apply ps-4 list-none;
-}
-
-.blog-toc-list span a {
-  @apply border-b-0;
-}
-
-.blog-toc .blog-toc-list .toc-item-h1 {
-  @apply text-base mt-3;
-}
-
-.blog-toc .blog-toc-list .toc-item-h2 {
-  @apply text-sm mt-2;
-}
-
-.blog-toc .blog-toc-list .toc-item-h3 {
-  @apply text-xs mt-1;
-}
-
-.blog-toc .blog-toc-list .toc-item-h4,
-.blog-toc .blog-toc-list .toc-item-h5,
-.blog-toc .blog-toc-list .toc-item-h5 {
-  @apply hidden;
+html {
+  font-family: 'OperatorMonoSSmLigNerdFontAAEOPSLMDI';
 }
