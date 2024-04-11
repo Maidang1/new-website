@@ -22,6 +22,7 @@ my-loader.mjs 里面的内容。如果书写 my-loader.js 呢。node 内置了�
 下面来介绍两个 hooks 的用法:
 
 ## resolve
+
 resolve 函数可以让我们拿到文件名和文件 format 的信息。我们可以改变传入的模块的信息，然后返回回去，返回的信息会交给 load 这个 hooks 来执行
 
 ```javascript
@@ -112,3 +113,6 @@ Module.prototype._compile = function (content, filename) {
 ```
 
 类似的 这样我们也可以注入 CJS 的 loader
+
+- 动作库迁移到 Framer Motion
+- WindiCSS 迁移到 TailwindCSS

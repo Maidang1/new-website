@@ -5,7 +5,7 @@ categorySlug: frontend
 title: 工作和生活
 subtitle: ''
 author: Tsuizen
-description: 身为码农怎么能没有自己的博客，由于博客园的整改风波，出于安全原因决定自己搭建，顺便可以练习技术以及督促自己更新🧐。
+description: 我的技术栈偏向于 React，因此 Nuxt.js，Vuepress 首先被排除在外，React 元框架有 Gatsby，Next.js，Remix 以及同时支持 React，Vue 和 Svelte 的 Astro。其中 Gatsby 的数据来源和 GraphQL 强绑定，虽然它有丰富的博客相关生态， 但我想要一种更通用的开发框架因此被排除在外。Remix 和 Astro 风头正劲，但是我对两者的了解不多，Next.js 似乎就成了目前的不二选择（其实已经在考虑用新技术重构了
 tags:
   - Next.js
   - 前端性能优化
@@ -14,10 +14,352 @@ createdAt: 2023-01-18
 draft: true
 ---
 
-# work && life
+## 框架选择
 
-## header2
+我对博客的需求不需要过于复杂的交互，快速响应，展示内容才是最重要的，因此考虑服务端渲染的方式。
 
-### header3
+我的技术栈偏向于 React，因此 Nuxt.js，Vuepress 首先被排除在外，React 元框架有 Gatsby，Next.js，Remix
+以及同时支持 React，Vue 和 Svelte 的 Astro。其中 Gatsby 的数据来源和 GraphQL 强绑定，虽然它有丰富的博客相关生态，
+但我想要一种更通用的开发框架因此被排除在外。Remix 和 Astro 风头正劲，但是我对两者的了解不多，Next.js
+似乎就成了目前的不二选择（其实已经在考虑用新技术重构了 🤔
 
-# work && life
+## 关于 MDX
+
+> MDX 是一种书写格式，允许你在 Markdown 文档中无缝地插入 JSX 代码。 你还可以导入（import）组件，例如交互式图表或弹框，并将它们 嵌入到内容当中。 这使得用组件编写较长的内容形成了 一场冲击 🚀。
+
+在 Next.js 中可以通过 `next/mdx` 官方插件或者第三方库来处理 MDX 文件。
+
+- `next/mdx` 其实就是将 MDX 文件交给 Webpack 进行编译处理，并将其视作一个单独的页面。
+  但是每次新增插件或者自定义组件都要在 next.config.js 文件中修改，开发体验并不友好。
+- 常用的第三方库有 `next-mdx-remote` 和 `mdx-bundler`，其中 `mdx-bundler` 可以导入外部组件，
+  因而成了我的首选项。
+
+关于怎么在 Next.js 中使用 MDX 篇幅有限，我会再写一篇文章详细展开。
+
+## 原子化 CSS 框架
+
+前端 JS 框架可谓日新月异，极大地扩展了工程难度。而在 CSS 领域，BEM，CSS Module 等都是顺应这一变化的产物。
+近年来，原子化框架的概念在国外受到广泛追捧，[Tailwindcss](https://www.tailwindcss.cn/docs) 就是其中的佼佼者。
+
+一开始我是比较抗拒使用它的，其理念和前端入门时受到的规范教育背道而驰。然而在跟随潮流试用之后我还是加入了真香大军。
+
+关于维护困难我个人并未感受到（或许是因为个人项目的原因），在 class 中直接写语义化类名并配合 vscode
+插件反倒是让我摆脱了来回切换文件，以及思考某些冷门 css 属性用法的烦恼。并且框架自带的规范样式以及基于 TailwindCSS
+的 [DaisyUI](https://daisyui.com/) 让我这个设计盲也能轻松写出不那么难看的页面来。 同时借助 TailwindCSS 的自定义功能，让我在实现深色模式时免去了不少麻烦。
+
+但是完全脱离手写 CSS 也并不现实，例如在配置 grid-area 以及定义 MDX 组件样式时就显得力不从心。因此我同时使用了
+SCSS 进行补充，而且在 css 文件中也可以复用 TailwindCSS 属性。
+
+```css
+h1 {
+  @apply text-4xl mt-14 mb-10;
+}
+```
+
+## RSS 订阅支持
+
+> RSS(Really Simple Syndication)是一种描述和同步网站内容的格式，其中包含来自网站的更新摘要，通常采用带有链接的文章列表的形式。
+
+现在使用 RSS 订阅的人越来越少了，但是对我而言，在信息过剩的时代通过 RSS 过滤不相干的推荐信息是保持高效获取信息的必要手段。
+本章我会介绍如何在博客中添加 RSS 订阅功能
+
+为个人博客添加 RSS 支持需要用到一个同名包
+
+```shell
+pnpm add rss -D
+```
+
+接着，创建一个 RSS 对象，里面包含了你博客的标题，描述，url 等信息
+
+```typescript
+const feed = new RSS({
+  title: "Tsuizen's blog",
+  description: '随便写东西的地方',
+  site_url: siteUrl,
+  feed_url: `${siteUrl}/feed.xml`,
+  language: 'cn',
+  pubDate: new Date(),
+  copyright: `All rights reserved ${new Date().getFullYear()}, Tsuizen`,
+});
+```
+
+全部属性可参考[RSS channel 属性](https://www.runoob.com/rss/rss-channel.html)
+
+然后遍历所有的文章并添加文章信息
+
+```typescript
+allPosts.map((post) => {
+  feed.item({
+    title: post.title,
+    url: `${siteUrl}/posts/${post.title}`,
+    date: post.date,
+    description: post.description,
+  });
+});
+```
+
+可以添加的信息请参考[RSS item 元素](https://www.runoob.com/rss/rss-item.html)
+
+最后将其写入 public 目录即可，完整代码如下
+
+```typescript
+import { writeFileSync } from 'fs';
+import RSS from 'rss';
+
+import { Post } from '@/types';
+
+import { getRecentPosts } from './posts';
+
+type RSSPost = Pick<Post, 'title' | 'createdAt' | 'description'> & {
+  date: Date;
+  url: string;
+};
+
+const getRSS = async () => {
+  const siteUrl = process.env.SITE_URL;
+  const allPosts = await getRecentPosts<RSSPost>([
+    'title',
+    'createdAt',
+    'description',
+  ]);
+
+  const feed = new RSS({
+    title: "Tsuizen's blog",
+    description: '随便写东西的地方',
+    site_url: siteUrl,
+    feed_url: `${siteUrl}/feed.xml`,
+    language: 'cn',
+    pubDate: new Date(),
+    copyright: `All rights reserved ${new Date().getFullYear()}, Tsuizen`,
+  });
+
+  allPosts.map((post) => {
+    feed.item({
+      title: post.title,
+      url: `${siteUrl}/posts/${post.title}`,
+      date: post.date,
+      description: post.description,
+    });
+  });
+
+  writeFileSync('./public/feed.xml', feed.xml({ indent: true }));
+};
+
+export default getRSS;
+```
+
+要让博客能够及时更新 xml 文件，还需要在 `page/index.tsx` 中的 `getStaticProps` 添加执行语句，
+
+```typescript
+export async function getStaticProps() {
+  ...
+
+  await getRSS();
+
+  ...
+}
+```
+
+现在运行项目后就可以看见 public 目录中生成了 `feed.xml`，访问`/feed.xml`就可以订阅 RSS 了
+
+## 为博客添加 SEO 和站点地图
+
+SEO 的学问非常多，本博客尽可能贴近谷歌指导的规范对 seo 进行配置。
+
+在 next.js 项目中添加 seo 一般使用`next-seo`第三方库。首先进行默认 SEO 的配置。
+
+要在全部页面配置默认 SEO 需要在`_app.tsx`文件中引入`DefaultSeo`
+
+```tsx
+export default function App() {
+
+// ...
+
+  const SEO = {
+    defaultTitle: "Tsuizen's blog",
+    titleTemplate: "%s | Tsuizen's blog",
+    description: 'Tsuizen的个人博客',
+    canonical: "https://blog.tsuizen.cn",
+    robotsProps: {
+      noarchive: false, // 不显示缓存链接
+      nosnippet: false, // 不在搜索中显示文本片段
+      maxSnippet: -1, // 值为-1谷歌会显示他认为最有效的文本片段长度
+      notranslate: false, // 不在搜索结果中提供页面翻译
+      noimageindex: false // 不要在此页面上为图像编制索引。如果不指定此值，页面上的图像可能会被编入索引并显示在搜索结果中。
+    }
+  };
+
+  return {
+    <DefaultSeo {...SEO} />
+  }
+}
+```
+
+以上是我选择的默认设置，`titleTemplate`中的 %s 是每个页面单独设置的标题内容，这样所有的页面就默认会携带 %s
+后面的模板。其他的配置可以参考`next-seo`的[文档](https://github.com/garmeeh/next-seo)
+
+接着来单独配置每个页面的内容，需要在相应页面引入`NextSEO`，以 post 页为例在`NextSEO`组件中添加对应的内容即可，
+想要在社交网站分享时呈现不错的效果就需要对 openGraph 进行配置
+
+```tsx
+<NextSeo
+  {...SEO}
+  title={post.title}
+  description={post.description}
+  canonical={'https://blog.tsuizen.cn/' + post.title}
+  openGraph={{
+    title: `${post.title}`,
+    description: `${post.description}`,
+    url: 'https://blog.tsuizen.cn/posts/' + post.title,
+    type: 'article',
+    article: {
+      publishedTime: post.createdAt,
+      modifiedTime: post.updatedAt,
+      authors: ['Tsuizen'],
+      tags: post.tags,
+    },
+    images: [],
+  }}
+/>
+```
+
+我们还可以在网页中添加结构化数据让谷歌读取，针对不同的网页类型作不同的搜索结果呈现
+在博客页面，我添加了一个 Article 的结构化数据用来描述文章信息
+
+```tsx
+<ArticleJsonLd
+  url={`https://blog.tsuizen.cn/posts/${post.title}`}
+  title={post.title}
+  images={[]}
+  datePublished={post.createdAt}
+  dateModified={post.updatedAt}
+  authorName={[
+    {
+      name: 'Tsuizen',
+      url: 'https://blog.tsuizen.cn',
+    },
+  ]}
+  publisherName='Tsuizen'
+  publisherLogo='https://blog.tsuizen.cn/images/logo.png'
+  description={post.description}
+  isAccessibleForFree={true}
+/>
+```
+
+在网页中会被展开成如下形式
+
+```html
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "datePublished": "2023-01-18T00:00:00.000Z",
+    "description": "身为码农怎么能没有自己的博客，由于博客园的整改风波，出于安全原因决定自己搭建，顺便可以练习技术以及督促自己更新🧐。",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://blog.tsuizen.cn/posts/使用Next.js构建我的个人博客"
+    },
+    "headline": "使用Next.js构建我的个人博客",
+    "image": [],
+    "dateModified": "2023-01-18T00:00:00.000Z",
+    "author": [
+      { "@type": "Person", "name": "Tsuizen", "url": "https://blog.tsuizen.cn" }
+    ],
+    "publisher": {
+      "@type": "Organization",
+      "name": "Tsuizen",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://blog.tsuizen.cn/images/logo.png"
+      }
+    },
+    "isAccessibleForFree": true
+  }
+</script>
+```
+
+这样谷歌就能根据你的需要展示更丰富的搜索结果。
+
+最后再来说说站点地图的问题，这是谷歌官方给出的定义：
+
+> 站点地图是一种文件，您可以在其中提供与您网站中的网页、视频或其他文件有关的信息，还可以说明这些内容之间的关系。Google 等搜索引擎会读取此文件，以便更高效地抓取您的网站。站点地图会告诉 Google 您认为网站中的哪些网页和文件比较重要，还会提供与这些文件有关的重要信息。例如，网页上次更新的时间和网页是否有任何备用的语言版本。
+
+我们可以使用`next-sitemap`来生成站点地图
+
+首先在根目录创建配置文件`next-sitemap.config.js`，添加地址，更新频率等需要的属性，然后根据需要可以在 transform 函数中配置不同相对路径中的属性
+，这里我修改了不同页面对应的优先级，更多的属性用法可以参考[官方文档](https://github.com/iamvishnusankar/next-sitemap)
+
+```javascript
+/** @type {import('next-sitemap').IConfig} */
+
+module.exports = {
+  siteUrl: 'https://blog.tsuizen.cn',
+  changefreq: 'daily',
+  priority: 1,
+  sitemapSize: 5000,
+  generateRobotsTxt: true,
+  // exclude: ['/protected-page', '/awesome/secret-page'],
+  // alternateRefs: [
+  //   {
+  //     href: 'https://blog.tsuizen.cn',
+  //     hreflang: 'cn'
+  //   }
+  // ],
+  // Default transformation function
+  transform: async (config, path) => {
+    const result = {
+      loc: 'https://blog.tsuizen.cn' + path, // => this will be exported as http(s)://<config.siteUrl>/<path>
+      changefreq: config.changefreq,
+      priority: config.priority,
+      lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
+      alternateRefs: config.alternateRefs ?? [],
+    };
+    if (path.startsWith('/tag')) {
+      result.priority = 0.6;
+    }
+    if (path.startsWith('/posts')) {
+      result.priority = 1;
+      this.changefreq = 'always';
+    }
+    if (path.startsWith('/category')) {
+      result.priority = 0.4;
+    }
+    if (path.startsWith('/archives')) {
+      result.priority = 0.3;
+    }
+    return result;
+  },
+  // additionalPaths: async (config) => [
+  //   await config.transform(config, '/additional-page')
+  // ],
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+      {
+        userAgent: 'test-bot',
+        allow: ['/path', '/path-2'],
+      },
+      // {
+      //   userAgent: 'black-listed-bot',
+      //   disallow: ['/sub-path-1', '/path-2']
+      // }
+    ],
+    additionalSitemaps: [],
+  },
+};
+```
+
+然后在`package.json`中可以在 postbuild 周期中配置脚本在打包后执行即可
+
+```json
+"postbuild": "next-sitemap",
+```
+
+然后我们就能看到 public 下生成了对应的站点 xml 文件和 robots.txt
+
+## 总结
+
+这片文章主要讲了我在博客中用到的技术栈，并没有详细的介绍太多具体实现，

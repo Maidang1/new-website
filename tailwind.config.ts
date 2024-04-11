@@ -18,7 +18,7 @@ const config: Config = {
     },
   },
   plugins: [require("@tailwindcss/typography"), iconsPlugin({
-    collections: getIconCollections(["simple-icons", "tdesign"])
+    collections: getIconCollections(["simple-icons", "tdesign", 'mdi-light'])
   })],
 };
 export default config;

@@ -4,12 +4,13 @@ import { useMDXComponents } from '@/mdx-components';
 import remarkToc from 'remark-toc';
 import { remarkCodeHike } from '@code-hike/mdx';
 import rehypeSlug from 'rehype-slug';
-import rehypeToc from '@jsdevtools/rehype-toc';
+import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
 import { readingTime } from 'reading-time-estimator';
 import { PostListContext } from '@/stores/post-list-context';
 import { PostItemContext } from '@/stores/post-item-context';
 import fm from 'front-matter';
+import remarkNoteBlock from '@/lib/remark-note-block';
 
 interface HomeProps {
   code: string;
@@ -142,6 +143,8 @@ export const getStaticProps = async (context: ContextProps) => {
         ...(options.remarkPlugins ?? []),
         remarkGfm,
         remarkToc,
+        remarkDirective,
+        remarkNoteBlock,
         [
           remarkCodeHike,
           {
