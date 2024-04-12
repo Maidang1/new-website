@@ -5,7 +5,7 @@ categorySlug: frontend
 title: 工作和生活
 subtitle: ''
 author: Tsuizen
-description: 我的技术栈偏向于 React，因此 Nuxt.js，Vuepress 首先被排除在外，React 元框架有 Gatsby，Next.js，Remix 以及同时支持 React，Vue 和 Svelte 的 Astro。其中 Gatsby 的数据来源和 GraphQL 强绑定，虽然它有丰富的博客相关生态， 但我想要一种更通用的开发框架因此被排除在外。Remix 和 Astro 风头正劲，但是我对两者的了解不多，Next.js 似乎就成了目前的不二选择（其实已经在考虑用新技术重构了
+description: 本文主要介绍了作者在构建个人博客时使用的技术栈和一些实现方法。作者选择了服务端渲染的方式，并使用了React框架Next.js。同时，作者还使用了MDX来处理博客的内容，选择了原子化CSS框架Tailwindcss进行样式设计，并使用了SCSS进行补充。此外，作者还添加了RSS订阅支持，进行了SEO和站点地图的配置，以提高博客的搜索引擎优化效果。
 tags:
   - Next.js
   - 前端性能优化
@@ -83,7 +83,7 @@ const feed = new RSS({
 });
 ```
 
-全部属性可参考[RSS channel 属性](https://www.runoob.com/rss/rss-channel.html)
+全部属性可参考[RSS channel 属性]
 
 然后遍历所有的文章并添加文章信息
 
@@ -98,7 +98,7 @@ allPosts.map((post) => {
 });
 ```
 
-可以添加的信息请参考[RSS item 元素](https://www.runoob.com/rss/rss-item.html)
+可以添加的信息请参考[RSS item 元素]
 
 最后将其写入 public 目录即可，完整代码如下
 

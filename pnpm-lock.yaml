@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@iconify-json/arcticons':
+    specifier: ^1.1.100
+    version: 1.1.100
   '@iconify-json/mdi-light':
     specifier: ^1.1.10
     version: 1.1.10
@@ -406,6 +409,12 @@ packages:
   /@fal-works/esbuild-plugin-global-externals@2.1.2:
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
     dev: true
+
+  /@iconify-json/arcticons@1.1.100:
+    resolution: {integrity: sha512-IO1u4p0BI1d1UDtVYBq8PBr/pJrkwinSpJPgt8JDMfhW057ZgJADzv7Wwj7CSgGJdVbcs0SFGzXR9YfNapk6iA==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
 
   /@iconify-json/mdi-light@1.1.10:
     resolution: {integrity: sha512-zs1/O6JV/IK0sTMgrc8EgeVvm9QzY4WgsIWc2c4IMgj3k9q79TXNDI6E6oDLVN3xU4B5THiM3Us3L7+dMUZqtg==}
