@@ -49,7 +49,7 @@ const Home = (props: HomeProps) => {
             <div className='border rounded-xl mt-5 p-4 space-y-2'>
               <div className='font-bold text-zinc-700 flex items-center'>
                 <span className='i-arcticons-openai-chatgpt mr-2 text-lg'></span>
-                <span>AI 生成的总结</span>
+                <span>AI Summary</span>
               </div>
               <div className='text-zinc-500 leading-loose text-sm'>
                 {description}
