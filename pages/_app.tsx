@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return transition((style) => {
     return (
-      <div className='overflow-hidden'>
+      <div className='overflow-hidden dark:bg-black'>
         <LayoutHeader />
         <animated.div style={style}>
           <PageLayout isBlogPage={isBlogPage}>

@@ -12,7 +12,7 @@ export default function BlogsList() {
         <a
           href={`/blog/${name}`}
           key={name}
-          className='item block font-normal mb-6 mt-2 opacity-60 border-none no-underline cursor-pointer text-black hover:opacity-100 transition-all ease-linear'
+          className='item block font-normal mb-6 mt-2 opacity-60 border-none no-underline cursor-pointer text-black dark:text-white hover:opacity-100 transition-all ease-linear'
         >
           <li className='no-underline list-none flex md:flex-row flex-col gap-2 md:items-center'>
             <span className='text-lg leading-3 flex gap-2 flex-wrap align-middle'>
