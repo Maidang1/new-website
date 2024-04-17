@@ -11,6 +11,7 @@ import { PostListContext } from '@/stores/post-list-context';
 import { PostItemContext } from '@/stores/post-item-context';
 import fm from 'front-matter';
 import remarkNoteBlock from '@/lib/remark-note-block';
+import { useRouter } from 'next/router';
 
 interface HomeProps {
   code: string;
@@ -22,46 +23,68 @@ const Home = (props: HomeProps) => {
   const { code, postInfo, frontmatter } = props;
   const components = useMDXComponents();
   const Component = getMDXComponent(code);
-  const { title, author, tags, description, createdAt } = frontmatter;
+  const router = useRouter();
+  const isBlogPage = router.asPath.startsWith('/blog') && router.asPath !== '/blog';
+  const { title, author, tags, description, createdAt, image } = frontmatter;
   return (
-    <PostItemContext.Provider value={frontmatter}>
-      <PostListContext.Provider value={postInfo}>
-        {title && (
-          <div className='post-header mb-8'>
-            <div className='mb-8 flex items-center relative text-4xl font-extrabold justify-center text-center'>
-              {title}
-            </div>
-            <div className='text-zinc-400 flex min-w-0 shrink grow flex-wrap gap-2 text-sm mb-8 justify-center dark:text-white'>
-              <span className='flex min-w-0 items-center space-x-1'>
-                {new Date(createdAt).toLocaleString()}
-              </span>
-              <span className='flex min-w-0 items-center space-x-1'>
-                {(tags as any[]).map((tag) => (
-                  <span key={tag} className='inline-block'>
-                    #{tag}
-                  </span>
-                ))}
-              </span>
-              <span className='flex min-w-0 items-center space-x-1'>
-                {author}
-              </span>
-            </div>
-            <div className='border rounded-xl mt-5 p-4 space-y-2'>
-              <div className='font-bold text-zinc-700 flex items-center dark:text-white'>
-                <span className='i-arcticons-openai-chatgpt mr-2 text-lg'></span>
-                <span>AI Summary</span>
+    <div className='overflow-y-auto h-screen overflow-x-hidden bg-gradient-radial pb-20 dark:bg-black dark:text-white'>
+      {image && (
+        <div
+          className='h-[400px] w-full'
+          style={{
+            backgroundImage: `url(${image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+      )}
+      <main
+        className={`flex m-auto px-8 container mx-auto max-w-5xl prose dark:text-white ${
+          isBlogPage ? 'mt-7' : 'mt-[120px]'
+        }`}
+      >
+        <div className='w-full' id='main-content'>
+          <PostItemContext.Provider value={frontmatter}>
+            <PostListContext.Provider value={postInfo}>
+              {title && (
+                <div className='post-header mb-8'>
+                  <div className='mb-8 flex items-center relative text-4xl font-extrabold justify-center text-center'>
+                    {title}
+                  </div>
+                  <div className='text-zinc-400 flex min-w-0 shrink grow flex-wrap gap-2 text-sm mb-8 justify-center dark:text-white'>
+                    <span className='flex min-w-0 items-center space-x-1'>
+                      {new Date(createdAt).toLocaleString()}
+                    </span>
+                    <span className='flex min-w-0 items-center space-x-1'>
+                      {(tags as any[]).map((tag) => (
+                        <span key={tag} className='inline-block'>
+                          #{tag}
+                        </span>
+                      ))}
+                    </span>
+                    <span className='flex min-w-0 items-center space-x-1'>
+                      {author}
+                    </span>
+                  </div>
+                  <div className='border rounded-xl mt-5 p-4 space-y-2'>
+                    <div className='font-bold text-zinc-700 flex items-center dark:text-white'>
+                      <span className='i-arcticons-openai-chatgpt mr-2 text-lg'></span>
+                      <span>AI Summary</span>
+                    </div>
+                    <div className='text-zinc-500 leading-loose text-sm dark:text-white'>
+                      {description}
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className='!text-base'>
+                <Component components={components} />
               </div>
-              <div className='text-zinc-500 leading-loose text-sm dark:text-white'>
-                {description}
-              </div>
-            </div>
-          </div>
-        )}
-        <div className='!text-base'>
-          <Component components={components} />
+            </PostListContext.Provider>
+          </PostItemContext.Provider>
         </div>
-      </PostListContext.Provider>
-    </PostItemContext.Provider>
+      </main>
+    </div>
   );
 };
 
@@ -202,7 +225,7 @@ export const getStaticProps = async (context: ContextProps) => {
         const content = await fs.readFile(filePath, 'utf8');
         const result = readingTime(content);
         const { attributes } = fm(content);
-        const { title } = attributes as any;
+        const { title, image } = attributes as any;
         feed.item({
           title: title,
           url: '',
@@ -213,6 +236,7 @@ export const getStaticProps = async (context: ContextProps) => {
           result,
           name: path.parse(fileItem).name,
           title,
+          image,
         };
       })
     );
