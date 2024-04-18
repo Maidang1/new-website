@@ -1,0 +1,6 @@
+.page-wrapper {
+  @apply overflow-y-auto h-screen overflow-x-hidden bg-gradient-radial pb-20 dark:bg-black dark:text-white;
+}
+.page-main-content {
+  @apply flex m-auto px-8 mx-auto max-w-5xl dark:text-white;
+}

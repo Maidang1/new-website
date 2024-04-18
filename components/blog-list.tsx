@@ -1,25 +1,31 @@
 import { PostListContext } from '@/stores/post-list-context';
 import { useContext } from 'react';
+import { isEmpty } from 'lodash';
 
 export default function BlogsList() {
   const result = useContext(PostListContext);
 
-  if (result.length === 0) return null;
+  if (isEmpty(result)) return null;
 
   return (
     <>
-      {result.map(({ name, result, title }) => (
+      {result.map(({ name, readingInfo, title }) => (
         <a
           href={`/blog/${name}`}
           key={name}
           className='item block font-normal mb-6 mt-2 opacity-60 border-none no-underline cursor-pointer text-black dark:text-white hover:opacity-100 transition-all ease-linear'
         >
           <li className='no-underline list-none flex md:flex-row flex-col gap-2 md:items-center'>
-            <span className='text-lg leading-3 flex gap-2 flex-wrap align-middle'>
+            <span className='text-lg gap-2 flex-wrap align-middle text-ellipsis overflow-hidden line-clamp-1 flex-1'>
               {title}
             </span>
-            <span className='text-sm'>{result.words} words</span> |
-            <span className='text-sm'>{result.text}</span>
+            <span className='text-sm whitespace-nowrap'>
+              {readingInfo.words} words
+            </span>{' '}
+            |
+            <span className='text-sm whitespace-nowrap'>
+              {readingInfo.text}
+            </span>
           </li>
         </a>
       ))}

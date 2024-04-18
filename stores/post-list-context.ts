@@ -1,3 +1,13 @@
 import { createContext } from 'react';
 
-export const PostListContext = createContext<any[]>([]);
+
+interface PostListItem {
+  name: string;
+  readingInfo: {
+    words: string;
+    text: string
+  }
+  title: string
+}
+
+export const PostListContext = createContext<PostListItem[]>([]);
