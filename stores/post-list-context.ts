@@ -1,13 +1,15 @@
 import { createContext } from 'react';
+type ReadingTime = ReturnType<
+  typeof import('reading-time-estimator').readingTime
+>;
 
-
-interface PostListItem {
+export type PostInfoItem = {
+  readingInfo: ReadingTime;
   name: string;
-  readingInfo: {
-    words: string;
-    text: string
-  }
-  title: string
-}
+  title: string;
+  image: string;
+};
 
-export const PostListContext = createContext<PostListItem[]>([]);
+
+
+export const PostListContext = createContext<PostInfoItem[]>([]);

@@ -44,3 +44,11 @@ export async function recursiveReaddir(dir: string): Promise<string[]> {
   );
   return files.flat(1);
 }
+
+export function getSegments(file: string) {
+  let segments = file.slice(0, -4).replace(/\\/g, '/').split('/');
+  if (segments[segments.length - 1] === 'index') {
+    segments.pop();
+  }
+  return segments;
+}
