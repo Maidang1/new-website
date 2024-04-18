@@ -22,7 +22,7 @@ export const PageHeader = (props: PageHeaderProps) => {
           {new Date(createdAt).toLocaleString()}
         </span>
         <span className='flex min-w-0 items-center space-x-1'>
-          {(tags as any[]).map((tag) => (
+          {tags.map((tag) => (
             <span key={tag} className='inline-block'>
               #{tag}
             </span>
