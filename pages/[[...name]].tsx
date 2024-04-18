@@ -4,8 +4,8 @@ import { useMDXComponents } from '@/mdx-components';
 import { PostInfoItem, PostListContext } from '@/stores/post-list-context';
 import { PostItemContext } from '@/stores/post-item-context';
 import { useRouter } from 'next/router';
-import { PageImage } from './page/page-image';
-import { PageHeader, type PageHeaderProps } from './page/page-header';
+import { PageImage } from '../components/page-image';
+import { PageHeader, type PageHeaderProps } from '../components/page-header';
 interface HomeProps {
   code: string;
   frontmatter: PageHeaderProps;
