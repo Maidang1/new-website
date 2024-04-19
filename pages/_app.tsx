@@ -4,9 +4,6 @@ import type { AppProps } from 'next/app';
 import { useTransition, animated } from '@react-spring/web';
 import LayoutHeader from './layout/header';
 import { useRouter } from 'next/router';
-import SimpleBar from 'simplebar-react';
-
-import 'simplebar-react/dist/simplebar.min.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -20,14 +17,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return transition((style) => {
     return (
-      <SimpleBar className='max-h-screen h-full' autoHide forceVisible='y'>
-        <div className='overflow-hidden dark:bg-black'>
-          <LayoutHeader />
-          <animated.div style={style}>
-            <Component {...pageProps} />
-          </animated.div>
-        </div>
-      </SimpleBar>
+      <div className='overflow-hidden dark:bg-black'>
+        <LayoutHeader />
+        <animated.div style={style}>
+          <Component {...pageProps} />
+        </animated.div>
+      </div>
     );
   });
 }
