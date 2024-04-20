@@ -2,6 +2,7 @@ import type { Config } from "tailwindcss";
 import { iconsPlugin, getIconCollections } from "@egoist/tailwindcss-icons";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -18,7 +19,7 @@ const config: Config = {
     },
   },
   plugins: [require("@tailwindcss/typography"), iconsPlugin({
-    collections: getIconCollections(["simple-icons", "tdesign", 'mdi-light', "arcticons"])
+    collections: getIconCollections(["simple-icons", "tdesign", 'mdi-light', "arcticons", 'circum'])
   })],
 };
 export default config;

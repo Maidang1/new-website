@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import { useTransition, animated } from '@react-spring/web';
 import LayoutHeader from './layout/header';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -22,6 +23,16 @@ export default function App({ Component, pageProps }: AppProps) {
         <animated.div style={style}>
           <Component {...pageProps} />
         </animated.div>
+        <Script strategy='beforeInteractive' id='init-darkMode'>
+          {`
+             !function() {
+              var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("madinah_blog_theme")||"auto";
+              if(e || t === 'true') {
+                document.documentElement.classList.add('dark');
+              }
+              }()
+            `}
+        </Script>
       </div>
     );
   });
