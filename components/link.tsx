@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React, { AnchorHTMLAttributes, DetailedHTMLProps } from 'react';
+import { iconCollections } from './icons';
 
 export const TagLink = (
   props: DetailedHTMLProps<
@@ -8,6 +9,7 @@ export const TagLink = (
   >
 ) => {
   const { title, href, children } = props;
+  console.log({ title, href, children });
   const base =
     'flex justify-start items-center mx-1 no-underline transition-colors ease-linear text-black dark:text-white';
   const underline =
@@ -18,7 +20,11 @@ export const TagLink = (
   return (
     <span className='inline-block align-bottom hover:opacity-70 break-words'>
       <Link href={href ?? ''} className={className}>
-        {title && <span className={`${title} mr-1`} />}
+        {title && (
+          <span className='mr-1 flex items-center'>
+            {iconCollections[title as keyof typeof iconCollections]()}
+          </span>
+        )}
         <span>{children}</span>
       </Link>
     </span>
