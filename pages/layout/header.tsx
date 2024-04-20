@@ -4,14 +4,6 @@ const LayoutHeader = () => {
       text: 'Blog',
       link: '/blog',
     },
-    {
-      text: 'Projects',
-      link: '/projects',
-    },
-    {
-      text: 'Workspace',
-      link: '/workspace',
-    },
   ];
   return (
     <div
