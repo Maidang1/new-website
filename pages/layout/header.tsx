@@ -18,6 +18,20 @@ const LayoutHeader = () => {
     }
   });
 
+  useEffectOnce(() => {
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const handleThemeChange = (event: MediaQueryListEvent) => {
+      setLocalDark(event.matches);
+      document.documentElement.classList.toggle('dark');
+    };
+    query.addEventListener('change', handleThemeChange);
+
+    return () => {
+      query.removeEventListener('change', handleThemeChange);
+    };
+  });
+
   const toggleTheme = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setLocalDark(!localDark);
     const isAppearanceTransition =

@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
           {`
              !function() {
               var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("madinah_blog_theme")||"auto";
-              if(e || t === 'true') {
+              if(e && e === 'auto'|| t === 'true') {
                 document.documentElement.classList.add('dark');
               }
               }()
