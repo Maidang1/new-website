@@ -1,21 +1,20 @@
 import { GetStaticPaths } from 'next';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { useMDXComponents } from '@/mdx-components';
-import { PostInfoItem, PostListContext } from '@/stores/post-list-context';
-import { PostItemContext } from '@/stores/post-item-context';
+import { PostListContext } from '@/stores/post-list-context';
 import { useRouter } from 'next/router';
 import { PageImage } from '../components/page-image';
-import { PageHeader, type PageHeaderProps } from '../components/page-header';
-import { Dictionary } from 'lodash';
+import { PageHeader } from '../components/page-header';
+import { Dictionary, last } from 'lodash';
 import { BlogItem } from '@/utils/post';
 interface HomeProps {
   code: string;
-  frontmatter: PageHeaderProps;
   blogs: Dictionary<BlogItem[]>;
   sortedYears: number[];
+  blogsInfoMap: Record<string, BlogItem>;
 }
 const Home = (props: HomeProps) => {
-  const { code, blogs, frontmatter, sortedYears } = props;
+  const { code, blogs, sortedYears, blogsInfoMap } = props;
   const components = useMDXComponents();
   const Component = getMDXComponent(code);
   const router = useRouter();
@@ -23,9 +22,11 @@ const Home = (props: HomeProps) => {
     router.asPath.startsWith('/blog') && router.asPath !== '/blog';
   const isBlogListPage = router.asPath === '/blog';
   const isProjectList = router.asPath === '/projects';
+  const requestPath = last(router.asPath.split('/'));
+  const blogInfo = blogsInfoMap[requestPath || ''];
   return (
     <div className='overflow-y-auto h-screen overflow-x-hidden bg-gradient-radial pb-20 dark:bg-black dark:text-white'>
-      <PageImage image={frontmatter.image} />
+      <PageImage image={blogInfo?.image} />
       <main
         className={`flex m-auto px-8 container mx-auto ${
           isProjectList ? '' : 'max-w-5xl prose'
@@ -34,12 +35,18 @@ const Home = (props: HomeProps) => {
         }`}
       >
         <div className='w-full h-full' id='main-content'>
-          <PostItemContext.Provider value={frontmatter}>
-            <PostListContext.Provider value={{ blogs, sortedYears }}>
-              <PageHeader {...frontmatter} />
-              <Component components={components} />
-            </PostListContext.Provider>
-          </PostItemContext.Provider>
+          <PostListContext.Provider value={{ blogs, sortedYears }}>
+            <PageHeader {...blogInfo} />
+            <Component components={components} />
+            <section className='mt-4 text-sm leading-loose text-gray-600 dark:text-neutral-400'>
+              {blogInfo?.lastModifyTime && (
+                <div>
+                  最后修改于{new Date(blogInfo.lastModifyTime).toLocaleString()}
+                </div>
+              )}
+              {blogInfo?.author && <div>作者：{blogInfo.author}</div>}
+            </section>
+          </PostListContext.Provider>
         </div>
       </main>
     </div>
@@ -83,13 +90,14 @@ export const getStaticProps = async (context: ContextProps) => {
   const mdxContext = await getMdxContent({ blogDir: postDir, requestPath });
   const { code, frontmatter } = await handleBuildMdx({ mdxContext });
   frontmatter.createTime = new Date(frontmatter.createTime).getTime();
-  const { groupBlogs, sortedYears } = await getBlogsInfo(postDir);
+  const { groupBlogs, sortedYears, blogsInfoMap } = await getBlogsInfo(postDir);
   return {
     props: {
       code,
       frontmatter,
       blogs: groupBlogs,
       sortedYears,
+      blogsInfoMap,
     },
   };
 };

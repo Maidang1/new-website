@@ -34,6 +34,7 @@ export interface BlogItem {
 export async function getBlogsInfo(postDir: string) {
   const { recursiveReaddir } = await import('@/utils/index');
   const { getGitTimestamp } = await import("@/utils/timestamp")
+  const blogsInfoMap: Record<string, BlogItem> = {}
   const files = (await recursiveReaddir(postDir))
     .map((file) => file.slice(postDir.length + 1))
     .filter((file) => file.endsWith('.mdx') || file.endsWith('.tsx'))
@@ -49,7 +50,8 @@ export async function getBlogsInfo(postDir: string) {
       const { title = '', image = '', author, createTime = '', description, tags = [], category = '' } = attributes;
       const year = new Date(createTime).getFullYear();
       allYears.push(year)
-      return {
+      const blogRequestPath = path.parse(filePath).name
+      const blogItemInfo = {
         title,
         image,
         readingTime: readingTime(content),
@@ -59,13 +61,14 @@ export async function getBlogsInfo(postDir: string) {
         description,
         tags,
         year,
-        name: path.parse(filePath).name,
+        name: blogRequestPath,
         category
       } as BlogItem;
+      blogsInfoMap[blogRequestPath] = blogItemInfo;
+      return blogItemInfo;
     })
   );
-
   const groupBlogs = groupBy(blogs, 'year')
   const sortedYears = uniq(allYears).sort((a, b) => b - a)
-  return { groupBlogs, sortedYears };
+  return { groupBlogs, sortedYears, blogsInfoMap };
 }
