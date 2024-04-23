@@ -12,6 +12,7 @@
   "dependencies": {
     "@iconify-json/arcticons": "^1.1.100",
     "@iconify-json/circum": "^1.1.10",
+    "@iconify-json/fluent-emoji-flat": "^1.1.16",
     "@iconify-json/mdi-light": "^1.1.10",
     "@iconify-json/simple-icons": "^1.1.97",
     "@iconify-json/tdesign": "^1.1.3",

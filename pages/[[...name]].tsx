@@ -12,7 +12,7 @@ interface HomeProps {
   code: string;
   frontmatter: PageHeaderProps;
   blogs: Dictionary<BlogItem[]>;
-  sortedYears: number[]
+  sortedYears: number[];
 }
 const Home = (props: HomeProps) => {
   const { code, blogs, frontmatter, sortedYears } = props;
@@ -22,20 +22,22 @@ const Home = (props: HomeProps) => {
   const isBlogPage =
     router.asPath.startsWith('/blog') && router.asPath !== '/blog';
   const isBlogListPage = router.asPath === '/blog';
+  const isProjectList = router.asPath === '/projects';
   return (
     <div className='overflow-y-auto h-screen overflow-x-hidden bg-gradient-radial pb-20 dark:bg-black dark:text-white'>
       <PageImage image={frontmatter.image} />
       <main
-        className={`flex m-auto px-8 container mx-auto max-w-5xl prose dark:text-white ${isBlogPage ? 'mt-7' : isBlogListPage ? 'mt-[80px]' : 'mt-[120px]'
-          }`}
+        className={`flex m-auto px-8 container mx-auto ${
+          isProjectList ? '' : 'max-w-5xl prose'
+        } dark:text-white ${
+          isBlogPage ? 'mt-7' : isBlogListPage ? 'mt-[80px]' : 'mt-[120px]'
+        }`}
       >
-        <div className='w-full' id='main-content'>
+        <div className='w-full h-full' id='main-content'>
           <PostItemContext.Provider value={frontmatter}>
             <PostListContext.Provider value={{ blogs, sortedYears }}>
               <PageHeader {...frontmatter} />
-              <div className='!text-base'>
-                <Component components={components} />
-              </div>
+              <Component components={components} />
             </PostListContext.Provider>
           </PostItemContext.Provider>
         </div>
@@ -87,7 +89,7 @@ export const getStaticProps = async (context: ContextProps) => {
       code,
       frontmatter,
       blogs: groupBlogs,
-      sortedYears
+      sortedYears,
     },
   };
 };

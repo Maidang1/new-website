@@ -11,6 +11,9 @@ dependencies:
   '@iconify-json/circum':
     specifier: ^1.1.10
     version: 1.1.11
+  '@iconify-json/fluent-emoji-flat':
+    specifier: ^1.1.16
+    version: 1.1.16
   '@iconify-json/mdi-light':
     specifier: ^1.1.10
     version: 1.1.10
@@ -438,6 +441,12 @@ packages:
 
   /@iconify-json/circum@1.1.11:
     resolution: {integrity: sha512-L8W22uUaPP/oczYqAX2jAx/LHYO5Ti1nEi3aj8+mbcZsyIj6fTb4ssuUFMRJtZQ0hHLb42N1n5RvPXRU1nC0iQ==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
+  /@iconify-json/fluent-emoji-flat@1.1.16:
+    resolution: {integrity: sha512-rfag8s2Ippaos57BC8huT6cVc0oWkvYaLDl0lokVX2EsS7VakKEvUlJ20CqaKiPTuaccWRthlCbjEq8XfLHDHw==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false

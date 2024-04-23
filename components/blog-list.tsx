@@ -6,7 +6,6 @@ import { Text } from "./year";
 export default function BlogsList() {
   const { blogs, sortedYears } = useContext(PostListContext);
   const [currentCategory, setCurrentCategory] = useState<string>('blog')
-  console.log("blogs", blogs)
   if (isEmpty(blogs)) return null;
   const length = flatten(Object.values(blogs)).filter(blog => blog.category === currentCategory).length;
 
@@ -42,7 +41,7 @@ export default function BlogsList() {
 
             if (isEmpty(blogList)) return null;
             return <div className="relative mb-[8em]" key={key}>
-              <Text text={`${key}`} className="pointer-events-none" />
+              <Text text={`${key}`} className="pointer-events-none !absolute -top-[0.8em]" />
               {
                 blogList.map(({ name, title, readingTime, createTime }) => <a href={`/blog/${name}`} key={name}
                   className="item block font-normal mb-6 mt-2 opacity-60 border-none no-underline cursor-pointer text-black dark:text-white hover:opacity-100 transition-all ease-linear">

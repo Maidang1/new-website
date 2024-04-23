@@ -19,7 +19,7 @@ const config: Config = {
     },
   },
   plugins: [require("@tailwindcss/typography"), iconsPlugin({
-    collections: getIconCollections(["simple-icons", "tdesign", 'mdi-light', "arcticons", 'circum'])
+    collections: getIconCollections(["simple-icons", "tdesign", 'mdi-light', "arcticons", 'circum', "fluent-emoji-flat"])
   })],
 };
 export default config;

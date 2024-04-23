@@ -34,7 +34,6 @@ html {
   z-index: 1;
 }
 
-
 .text-stroke-hex-aaa {
   color: transparent;
   -webkit-text-stroke-color: rgba(170, 170, 170, 1);
@@ -43,7 +42,25 @@ html {
 }
 
 .deep-hover {
-  transition-duration: .15s;
+  transition-duration: 0.15s;
   transition-property: opacity;
-  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-grid > .item {
+  background: transparent;
+  font-size: 1.1rem;
+  width: 350px;
+  max-width: 100%;
+  padding: 0.5rem 0.875rem 0.875rem;
+  border-radius: 6px;
+
+  transition: 0.2s all ease-out;
+  text-decoration: none;
+  border-bottom: none !important;
+  opacity: 0.6;
+  &:hover {
+    background: #8881;
+    opacity: 1;
+  }
 }
