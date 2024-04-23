@@ -1,3 +1,5 @@
+import { BlogItem } from '@/utils/post';
+import { Dictionary } from 'lodash';
 import { createContext } from 'react';
 type ReadingTime = ReturnType<
   typeof import('reading-time-estimator').readingTime
@@ -12,4 +14,4 @@ export type PostInfoItem = {
 
 
 
-export const PostListContext = createContext<PostInfoItem[]>([]);
+export const PostListContext = createContext<{ blogs: Dictionary<BlogItem[]>, sortedYears: number[] }>({ blogs: {}, sortedYears: [] });

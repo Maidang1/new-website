@@ -2,27 +2,27 @@ import fs from "fs/promises"
 import path from 'path'
 
 interface MdxContentParams {
-  postDir: string,
+  blogDir: string,
   requestPath: string
 }
 export const getMdxContent = async (params: MdxContentParams) => {
-  const { postDir, requestPath } = params;
+  const { blogDir, requestPath } = params;
 
   let mdxContext = '';
   try {
     mdxContext = await fs.readFile(
-      path.join(postDir, `${requestPath}.mdx`),
+      path.join(blogDir, `${requestPath}.mdx`),
       'utf8'
     );
   } catch {
     try {
       mdxContext = await fs.readFile(
-        path.join(postDir, `${requestPath}`, 'index.mdx'),
+        path.join(blogDir, `${requestPath}`, 'index.mdx'),
         'utf8'
       );
     } catch {
       mdxContext = await fs.readFile(
-        path.join(postDir, `${requestPath}`, 'index.tsx'),
+        path.join(blogDir, `${requestPath}`, 'index.tsx'),
         'utf8'
       );
     }
