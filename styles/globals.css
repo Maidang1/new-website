@@ -21,6 +21,7 @@ html {
 .dark::view-transition-old(root) {
   z-index: 1;
 }
+
 .dark::view-transition-new(root) {
   z-index: 999;
 }
@@ -28,6 +29,15 @@ html {
 ::view-transition-old(root) {
   z-index: 999;
 }
+
 ::view-transition-new(root) {
   z-index: 1;
+}
+
+
+.text-stroke-hex-aaa {
+  color: transparent;
+  -webkit-text-stroke-color: rgba(170, 170, 170, 1);
+  -webkit-text-stroke-width: 2px;
+  opacity: 0.15;
 }

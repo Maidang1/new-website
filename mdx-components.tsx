@@ -2,6 +2,7 @@ import type { MDXComponents } from 'mdx/types';
 import { TagLink } from './components/link';
 import { heading } from './components/header';
 import BlogsList from './components/blog-list';
+import { Projects } from './components/project-list';
 export function useMDXComponents(): MDXComponents {
   return {
     ExtraTitle: ({ children }) => (
@@ -18,6 +19,7 @@ export function useMDXComponents(): MDXComponents {
     h5: heading('h5'),
     h6: heading('h6'),
     BlogsList,
+    Projects,
     blockquote: ({ children }) => {
       return (
         <blockquote className='before:bg-blue-500 not-italic not-prose before:h-full before:w-[2px] before:inline-block relative before:absolute top-0 bottom-0 -left-2 ml-2'>
