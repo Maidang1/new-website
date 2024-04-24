@@ -24,7 +24,7 @@ export const PageHeader = (props: BlogItem) => {
       </div>
       <div className='border rounded-xl mt-5 p-4 space-y-2'>
         <div className='font-bold text-zinc-700 flex items-center dark:text-white'>
-          <span className='i-arcticons-openai-chatgpt mr-2 text-lg'></span>
+          <span className='mr-2 text-lg i-mingcute-sparkles-2-line'></span>
           <span>AI Summary</span>
         </div>
         <div className='text-zinc-500 leading-loose text-sm dark:text-white'>

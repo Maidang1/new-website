@@ -17,6 +17,9 @@ dependencies:
   '@iconify-json/mdi-light':
     specifier: ^1.1.10
     version: 1.1.10
+  '@iconify-json/mingcute':
+    specifier: ^1.1.17
+    version: 1.1.17
   '@iconify-json/simple-icons':
     specifier: ^1.1.97
     version: 1.1.100
@@ -453,6 +456,12 @@ packages:
 
   /@iconify-json/mdi-light@1.1.10:
     resolution: {integrity: sha512-zs1/O6JV/IK0sTMgrc8EgeVvm9QzY4WgsIWc2c4IMgj3k9q79TXNDI6E6oDLVN3xU4B5THiM3Us3L7+dMUZqtg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
+  /@iconify-json/mingcute@1.1.17:
+    resolution: {integrity: sha512-WTKnn5OicUo18dE3rkJs00sUjOIAui8Ut9yZSXamRfjzmLxuX9FKqYQAbFXaV6lw0T4QwBQ8/y4ftaWl/1Entg==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false
