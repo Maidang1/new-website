@@ -39,11 +39,13 @@ const Home = (props: HomeProps) => {
             <PageHeader {...blogInfo} />
             <Component components={components} />
             <section className='mt-4 text-sm leading-loose text-gray-600 dark:text-neutral-400'>
-              {blogInfo?.lastModifyTime && (
-                <div>
-                  最后修改于{new Date(blogInfo.lastModifyTime).toLocaleString()}
-                </div>
-              )}
+              {/* {blogInfo?.lastModifyTime &&
+                !Number.isNaN(blogInfo.lastModifyTime) && (
+                  <div>
+                    最后修改于
+                    {new Date(blogInfo.lastModifyTime).toLocaleString()}
+                  </div>
+                )} */}
               {blogInfo?.author && <div>作者：{blogInfo.author}</div>}
             </section>
           </PostListContext.Provider>
