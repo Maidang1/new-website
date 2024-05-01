@@ -49,7 +49,7 @@ const Home = (props: HomeProps) => {
                 )} */}
               {blogInfo?.author && <div>作者：{blogInfo.author}</div>}
               {isBlogPage && (
-                <div className='mt-[100px]'>
+                <div className='mt-[100px] not-prose'>
                   <Waline
                     serverURL='https://comment.felixwliu.cn/'
                     path={router.asPath}
