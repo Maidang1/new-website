@@ -7,6 +7,7 @@ import { PageImage } from '../components/page-image';
 import { PageHeader } from '../components/page-header';
 import { Dictionary, last } from 'lodash';
 import { BlogItem } from '@/utils/post';
+import { Waline } from '@/components/comment';
 interface HomeProps {
   code: string;
   blogs: Dictionary<BlogItem[]>;
@@ -47,6 +48,15 @@ const Home = (props: HomeProps) => {
                   </div>
                 )} */}
               {blogInfo?.author && <div>作者：{blogInfo.author}</div>}
+              {isBlogPage && (
+                <div className='mt-[100px]'>
+                  <Waline
+                    serverURL='https://comment.felixwliu.cn/'
+                    path={router.asPath}
+                    dark="html.dark"
+                  />
+                </div>
+              )}
             </section>
           </PostListContext.Provider>
         </div>
