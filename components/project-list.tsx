@@ -8,7 +8,7 @@ export const Projects = () => {
         link: 'https://github.com/Maidang1/farm-plugin-virtual',
         title: 'farm-plugin-virtual',
         description: 'Rust plugin for farm to easily use virtual module',
-        Icon: () => <span className='i-fluent-emoji-flat-cookie'></span>,
+        Icon: () => <span className='i-fluent-emoji-flat-cookie' />,
       },
     ],
     Solid: [
@@ -16,9 +16,7 @@ export const Projects = () => {
         link: 'https://github.com/Maidang1/solid-js-template',
         title: 'solid-js-template',
         description: 'Template for solid-js',
-        Icon: () => (
-          <span className='i-fluent-emoji-flat-artist-palette'></span>
-        ),
+        Icon: () => <span className='i-fluent-emoji-flat-artist-palette' />,
       },
     ],
     Rollup: [
@@ -26,7 +24,7 @@ export const Projects = () => {
         link: 'https://github.com/Maidang1/rollup-playground',
         title: 'rollup-playground',
         description: 'Use Rollup in browser',
-        Icon: () => <span className='i-fluent-emoji-flat-joystick'></span>,
+        Icon: () => <span className='i-fluent-emoji-flat-joystick' />,
       },
     ],
     vscode: [
@@ -34,7 +32,7 @@ export const Projects = () => {
         link: 'https://github.com/Maidang1/markdown-image-upload',
         title: 'markdown-image-upload',
         description: 'vscode extension easy insert image in markdown file',
-        Icon: () => <span className='i-fluent-emoji-flat-abacus'></span>,
+        Icon: () => <span className='i-fluent-emoji-flat-abacus' />,
       },
     ],
   } as const;
@@ -61,6 +59,7 @@ export const Projects = () => {
                     href={link}
                     target='_blank'
                     className='item relative flex items-center'
+                    rel='noreferrer'
                   >
                     <div className='pt-2 pr-5'>
                       <div className='text-5xl opacity-50 '>

@@ -1,4 +1,5 @@
-import path from 'path';
+import type { Dirent } from 'fs-extra';
+import path from 'node:path';
 
 export function normalizePath(id: string): string {
   return path.posix.normalize(isWindows ? slash(id) : id);
@@ -12,16 +13,17 @@ export const isWindows =
   typeof process !== 'undefined' && process.platform === 'win32';
 
 export async function recursiveReaddir(dir: string): Promise<string[]> {
-  const fsp = await import('fs/promises');
-  const fs = await import('fs');
-  const path = await import('path');
+  const fsp = await import('node:fs/promises');
+  const fs = await import('node:fs');
+  const path = await import('node:path');
   if (!fs.existsSync(dir)) {
     return [];
   }
 
-  let directs;
+  let directs: Dirent[] = [];
   try {
     directs = await fsp.readdir(dir, { withFileTypes: true });
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   } catch (e: any) {
     if (e.code === 'EACCES') {
       // Ignore permission errors
@@ -30,6 +32,7 @@ export async function recursiveReaddir(dir: string): Promise<string[]> {
     throw e;
   }
   if (directs.some((dirent) => dirent.isSymbolicLink())) {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     const err: any = new Error(
       'Symbolic links are not supported in recursiveReaddir'
     );
@@ -46,7 +49,7 @@ export async function recursiveReaddir(dir: string): Promise<string[]> {
 }
 
 export function getSegments(file: string) {
-  let segments = file.slice(0, -4).replace(/\\/g, '/').split('/');
+  const segments = file.slice(0, -4).replace(/\\/g, '/').split('/');
   if (segments[segments.length - 1] === 'index') {
     segments.pop();
   }

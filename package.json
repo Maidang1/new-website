@@ -35,6 +35,7 @@
     "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.7.2",
     "@code-hike/mdx": "^0.9.0",
     "@egoist/tailwindcss-icons": "^1.7.4",
     "@jsdevtools/rehype-toc": "^3.0.2",
